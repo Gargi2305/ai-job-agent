@@ -3,6 +3,7 @@ from routes.full_analysis import full_logic
 from models.schemas import CoverLetterRequest
 import os
 import json
+from services.sheets import load_seen_jobs, save_job
 
 SEEN_FILE = "seen_jobs.json"
 
@@ -80,12 +81,20 @@ def run_job_pipeline(resume):
             results.append({
                 "title": title,
                 "company": company,
-                "score": score
+                "score": score,
+                "link": job.get("link")
             })
 
             # ✅ save seen immediately
             seen_jobs.add(job_id)
-            save_seen_jobs(seen_jobs)
+            # save_seen_jobs(seen_jobs)
+            save_job({
+                        "title": title,
+                        "company": company,
+                        "score": score,
+                        "link": job.get("link"),
+                        "description": jd_text
+                    })
 
         except Exception as e:
             print(f"   ❌ Skipped: {e}")
