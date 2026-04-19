@@ -6,3 +6,4 @@ prepare_input.py
 *.pyc
 *.pyo
 *.pyd
+credentials.json
